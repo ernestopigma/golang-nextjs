@@ -1,7 +1,15 @@
 package main
 
-import "fmt"
+import (
+	handler "golangnext/api"
+	"log"
+	"net/http"
+)
 
 func main() {
-	fmt.Println("Hello, World!")
+
+	http.HandleFunc("/", handler.Handler)
+	http.HandleFunc("/users", handler.Users)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
