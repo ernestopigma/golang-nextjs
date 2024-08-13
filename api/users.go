@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"golangnext/go/models"
 	"net/http"
+
+	"github.com/brianvoe/gofakeit/v7"
 )
 
 func Users(w http.ResponseWriter, r *http.Request) {
@@ -12,7 +14,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 
 	u := models.User{
 		ID:       1,
-		Username: "johndoe",
+		Username: gofakeit.Name(),
 		LastName: "Ponce",
 		Age:      25,
 	}
