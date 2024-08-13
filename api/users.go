@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"golangnext/models"
+	"golangnext/go/models"
 	"net/http"
 )
 
@@ -14,6 +14,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 		ID:       1,
 		Username: "johndoe",
 		LastName: "Ponce",
+		Age:      25,
 	}
 
 	// Convert user struct to JSON string
