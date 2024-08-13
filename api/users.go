@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"golangnext/go/models"
 	"net/http"
+	"os"
 
 	"github.com/brianvoe/gofakeit/v7"
 )
@@ -17,6 +18,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 		Username: gofakeit.Name(),
 		LastName: "Ponce",
 		Age:      25,
+		Env:      os.Getenv("TEST_ENV"),
 	}
 
 	// Convert user struct to JSON string

@@ -5,4 +5,5 @@ type User struct {
 	Username string `json:"username"`
 	LastName string `json:"last_name"`
 	Age      int    `json:"age"`
+	Env      string `json:"env"`
 }
