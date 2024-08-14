@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"golangnext/go/models"
+	"golangnext/goapi/models"
 	"net/http"
 	"os"
 
