@@ -226,8 +226,8 @@ export default function Home() {
       >
         {/* <!-- Heading --> */}
         <div className="flex flex-col space-y-1.5 pb-6">
-          <h2 className="font-semibold text-lg tracking-tight">Ask questions about Ashley Davis</h2>
-          <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI (ChatGPT) and the CV of Ashley Davis</p>
+          <h2 className="font-semibold text-lg tracking-tight">Ask questions ENV {process.env.ENV}</h2>
+          <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI (ChatGPT) fffffand the CV of Ashley Davis</p>
           <p className="text-xs text-[#6b7280] leading-3">Answers are probabalistic and can be wrong. ChatGPT is not intelligent.</p>
         </div>
   
@@ -256,7 +256,7 @@ export default function Home() {
               </div>
             </span>
             <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">AI </span> Ask question about the skills, education and work history of Ashley Davis
+              <span className="block font-bold text-gray-700">AI </span> Ask question {BASE_URL} - {process.env.ENV}
             </p>
           </div>
   
