@@ -16,7 +16,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 	u := models.User{
 		ID:       1,
 		Username: gofakeit.Name(),
-		LastName: "Ponce",
+		LastName: "test",
 		Age:      25,
 		Env:      os.Getenv("TEST_ENV"),
 	}
