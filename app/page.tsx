@@ -5,7 +5,10 @@ import axios from "axios";
 import Markdown from 'markdown-to-jsx';
 
 
-const BASE_URL = "http://localhost:8080";
+let BASE_URL = "http://localhost:8080";
+if (process.env.ENV === "production") {
+    BASE_URL = "/api";
+}
 
 
 export default function Home() {
@@ -43,7 +46,7 @@ export default function Home() {
       //
       // Requests a new thread from the backend.
       //
-      const { data } = await axios.post(`${BASE_URL}/chat/new`);
+      const { data } = await axios.post(`${BASE_URL}/chatnew`);
       threadId.current = data.threadId;
 
       //
@@ -82,7 +85,7 @@ export default function Home() {
       //
       // Sends the message to the backend.
       //
-      const { data } = await axios.post(`${BASE_URL}/chat/send`, {
+      const { data } = await axios.post(`${BASE_URL}/chatsend`, {
           threadId: threadId.current,
           text,
       });
@@ -104,7 +107,7 @@ export default function Home() {
   //
   async function updateMessages(): Promise<void> {
 
-      const { data } = await axios.post(`${BASE_URL}/chat/list`, {
+      const { data } = await axios.post(`${BASE_URL}/chatlist`, {
           threadId: threadId.current,
           runId: runId,
       });

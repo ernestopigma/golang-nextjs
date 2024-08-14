@@ -8,9 +8,9 @@ import (
 
 func main() {
 
-	http.HandleFunc("/chat/new", enableCORS(handler.ChatNew))
-	http.HandleFunc("/chat/list", enableCORS(handler.ChatList))
-	http.HandleFunc("/chat/send", enableCORS(handler.ChatSend))
+	http.HandleFunc("/chatnew", enableCORS(handler.ChatNew))
+	http.HandleFunc("/chatlist", enableCORS(handler.ChatList))
+	http.HandleFunc("/chatsend", enableCORS(handler.ChatSend))
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 
