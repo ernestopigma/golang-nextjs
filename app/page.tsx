@@ -12,7 +12,7 @@ export default function Home() {
   const threadId = useRef<string | undefined>(undefined);
   const scrollContainer = useRef<HTMLDivElement>(null);
   const [runId, setRunId] = useState<string | undefined>(undefined);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any>([]);
   const [message, setMessage] = useState<string>("");
   const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
   const [showInfo, setShowInfo] = useState<boolean>(true);
@@ -225,7 +225,7 @@ export default function Home() {
                 <div className="flex flex-col space-y-1.5 pb-6">
                     <h2 className="font-semibold text-lg tracking-tight">Ask questions about Ashley Davis</h2>
                     <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI (ChatGPT) and the CV of Ashley Davis</p>
-                    <p className="text-xs text-[#6b7280] leading-3">Answers are probabalistic and can be wrong. ChatGPT isn't intelligent.</p>
+                    <p className="text-xs text-[#6b7280] leading-3">Answers are probabalistic and can be wrong. ChatGPT is not intelligent.</p>
                 </div>
 
                 {/* <!-- Chat Container --> */}
@@ -251,7 +251,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    {messages.map((message, index) => {
+                    {messages.map((message: { role: string; content: { type: string; text: { value: string; }; }[]; }, index: React.Key | null | undefined) => {
                         return (
                             <div
                                 key={index} 
@@ -283,7 +283,7 @@ export default function Home() {
                                 </span>
                                 
                                 <div className="flex flex-col">
-                                    {message.content.map((content, index) => {
+                                    {message.content.map((content: { type: string; text: { value: string; }; }, index: any) => {
                                         if (content.type === "text") {
                                             return renderText(content.text.value, message.role);
                                         }
@@ -330,7 +330,7 @@ export default function Home() {
                     </div>
 
                     <div className="text-sm ml-3 pt-3 pr-1 text-gray-500">
-                        Example: What is Ashley's skillset?
+                        Example: sobre que puedo preguntar?
                     </div>
                 </div>
 
