@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"golangnext/goapi"
 	"net/http"
 	"os"
@@ -14,6 +13,10 @@ import (
 type BodyChatNew struct {
 	ThreadID string `json:"threadId"`
 	Text     string `json:"text"`
+}
+
+type ResponseChatSend struct {
+	RunID string `json:"runId"`
 }
 
 func ChatSend(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +47,17 @@ func ChatSend(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		fmt.Fprintf(w, "{runId: %s}", run.ID)
+		respChatSend := ResponseChatSend{
+			RunID: run.ID,
+		}
+
+		jsonString, err := json.Marshal(respChatSend)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		goapi.ResponseJson(w, jsonString, http.StatusOK)
 		return
 	} else {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
