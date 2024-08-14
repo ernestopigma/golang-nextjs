@@ -5,11 +5,8 @@ import axios from "axios";
 import Markdown from 'markdown-to-jsx';
 
 
-let BASE_URL = "http://localhost:8080";
-if (process.env.ENV === "production") {
-    BASE_URL = "/api";
-}
-
+let BASE_URL = "/api";
+//let BASE_URL = "http://localhost:8080";
 
 export default function Home() {
   const threadId = useRef<string | undefined>(undefined);
@@ -19,6 +16,7 @@ export default function Home() {
   const [message, setMessage] = useState<string>("");
   const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
   const [showInfo, setShowInfo] = useState<boolean>(true);
+  const [apiUrl, setApiUrl] = useState<string | undefined>(BASE_URL);
 
 
     //
@@ -256,7 +254,7 @@ export default function Home() {
               </div>
             </span>
             <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">AI </span> Ask question {BASE_URL} - {process.env.ENV}
+              <span className="block font-bold text-gray-700">AI </span> Ask question {apiUrl} - {process.env.REACT_APP_API_URL}
             </p>
           </div>
   
