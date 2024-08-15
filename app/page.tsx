@@ -5,8 +5,12 @@ import axios from "axios";
 import Markdown from 'markdown-to-jsx';
 
 
-let BASE_URL = "/api";
-//let BASE_URL = "http://localhost:8080";
+let BASE_URL = "http://localhost:8080";
+if (process.env.NEXT_PUBLIC_ENV === "production") {
+  BASE_URL = "/api";
+}
+
+
 
 export default function Home() {
   const threadId = useRef<string | undefined>(undefined);
@@ -116,7 +120,7 @@ export default function Home() {
       setMessages(messages);
 
       if (runId) {
-          if (status === "completed") {
+          if (status === "completed" || status === "failed") {
               setTimeout(() => {
                   // The run has finished.
                   setRunId(undefined);
@@ -224,7 +228,7 @@ export default function Home() {
       >
         {/* <!-- Heading --> */}
         <div className="flex flex-col space-y-1.5 pb-6">
-          <h2 className="font-semibold text-lg tracking-tight">Ask questions ENV {process.env.ENV}</h2>
+          <h2 className="font-semibold text-lg tracking-tight">Ask questions ENV</h2>
           <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI (ChatGPT) fffffand the CV of Ashley Davis</p>
           <p className="text-xs text-[#6b7280] leading-3">Answers are probabalistic and can be wrong. ChatGPT is not intelligent.</p>
         </div>
@@ -254,7 +258,7 @@ export default function Home() {
               </div>
             </span>
             <p className="leading-relaxed">
-              <span className="block font-bold text-gray-700">AI </span> Ask question {apiUrl} - {process.env.REACT_APP_API_URL}
+              <span className="block font-bold text-gray-700">AI </span>
             </p>
           </div>
   
