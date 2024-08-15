@@ -31,3 +31,14 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.blink {
+  animation: blink-animation 0.5s steps(5, start) infinite;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}

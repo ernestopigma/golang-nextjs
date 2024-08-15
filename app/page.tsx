@@ -19,19 +19,12 @@ export default function Home() {
   const [messages, setMessages] = useState<any>([]);
   const [message, setMessage] = useState<string>("");
   const [chatbotVisible, setChatbotVisible] = useState<boolean>(true);
-  const [showInfo, setShowInfo] = useState<boolean>(true);
-  const [apiUrl, setApiUrl] = useState<string | undefined>(BASE_URL);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
-    //
-    // Creates a new message thread, if there isn't one already.
-    //
     async function createThread(): Promise<void> {
         
       if (threadId.current === undefined) {
-          //
-          // Try and reload from local storage.
-          //
           const storedThreadId = localStorage.getItem("threadId");
           if (storedThreadId) {
               threadId.current = storedThreadId;
@@ -41,25 +34,17 @@ export default function Home() {
 
 
       if (threadId.current !== undefined) {
-          // Already have a thread.
           return; 
       }
 
-      //
-      // Requests a new thread from the backend.
-      //
+
       const { data } = await axios.post(`${BASE_URL}/chatnew`);
       threadId.current = data.threadId;
 
-      //
-      // Save the thread id in local storage.
-      //
       localStorage.setItem("threadId", threadId.current!);
   }
 
-  //
-  // Starts a new chat thread.
-  //
+
   function onResetThread() {
       threadId.current = undefined;
       setMessages([]);
@@ -75,40 +60,31 @@ export default function Home() {
           });
   }
 
-  //
-  // Adds a message to the chat.
-  //
+ 
   async function sendMessage(text: string): Promise<void> {
       if (runId !== undefined) {
-          // Already running.
           return;
       }
 
-      //
-      // Sends the message to the backend.
-      //
       const { data } = await axios.post(`${BASE_URL}/chatsend`, {
           threadId: threadId.current,
           text,
       });
 
+      setIsLoading(true);
+
       setRunId(data.runId);
   }
 
-  //
-  // Sends the message the user has typed to the AI.
-  //
+
   async function onSendMessage(): Promise<void> {
       const messageToSend = message.trim();
-      setMessage(""); // Clear for the next message.
+      setMessage("");
       await sendMessage(messageToSend);
   }
 
-  //
-  // Updates messages in the UI.
-  //
-  async function updateMessages(): Promise<void> {
 
+  async function updateMessages(): Promise<void> {
       const { data } = await axios.post(`${BASE_URL}/chatlist`, {
           threadId: threadId.current,
           runId: runId,
@@ -116,22 +92,20 @@ export default function Home() {
 
       const { messages, status } = data;
       
-      messages.reverse(); // Reverse so the newest messages are at the bottom.
+      messages.reverse();
       setMessages(messages);
 
       if (runId) {
           if (status === "completed" || status === "failed") {
+              setIsLoading(false);
               setTimeout(() => {
-                  // The run has finished.
                   setRunId(undefined);
-              }, 5000); // Give it some time to finish up.
+              }, 3000); 
           }
       }
   }
 
-  //
-  // Gets the role name for a message.
-  //
+
   function getRoleName(role: string): string {
       if (role === "user") {
           return "You";
@@ -144,9 +118,7 @@ export default function Home() {
       }
   }
 
-  //
-  // Render a chunk of text as paragraphs.
-  //
+
   function renderText(text: string, role: string) {
       return text.split("\n").map((line, index) => {
           return (
@@ -173,7 +145,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-
       if (runId === undefined) {
           return;
       }
@@ -189,26 +160,18 @@ export default function Home() {
   }, [runId]);
 
   useEffect(() => {
-      //
-      // Scroll to the end.
-      //
       scrollContainer.current!.scrollTop = scrollContainer.current!.scrollHeight;
 
   }, [messages]);
 
-  //
-  // Toggles visibility of the chatbot.
-  //
+
   function onToggleChatbot() {
       setChatbotVisible(!chatbotVisible);
   }
 
-  //
-  // Handles the enter key.
-  //
+
   async function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>): Promise<void> {
       if (event.key === "Enter") {
-          // Send message on enter.
           await onSendMessage();
       }
   }
@@ -228,11 +191,12 @@ export default function Home() {
       >
         {/* <!-- Heading --> */}
         <div className="flex flex-col space-y-1.5 pb-6">
-          <h2 className="font-semibold text-lg tracking-tight">Ask questions ENV</h2>
-          <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI (ChatGPT) fffffand the CV of Ashley Davis</p>
+          <h2 className="font-semibold text-lg tracking-tight">Ask questions</h2>
+          <p className="text-xs text-[#6b7280] leading-3">Powered by Open AI </p>
           <p className="text-xs text-[#6b7280] leading-3">Answers are probabalistic and can be wrong. ChatGPT is not intelligent.</p>
         </div>
-  
+
+
         {/* <!-- Chat Container --> */}
         <div ref={scrollContainer} className="flex-grow overflow-y-auto mb-6 pr-4">
           {/* <!-- Chat Message AI --> */}
@@ -269,6 +233,7 @@ export default function Home() {
                   <div className="rounded-full bg-gray-100 border p-1">
                     {message.role === "assistant" && (
                       <svg
+                        className={`${isLoading ? 'blink' : ''}`}
                         stroke="none"
                         fill="black"
                         strokeWidth="1.5"
